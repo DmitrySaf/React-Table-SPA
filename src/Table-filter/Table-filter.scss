@@ -1,0 +1,13 @@
+.table-filter {
+  display: flex;
+  justify-content: start;
+  gap: 10px;
+  margin-bottom: 20px;
+  &__input {
+    padding: 3px;
+  }
+}
+
+select {
+  padding: 3px;
+}
