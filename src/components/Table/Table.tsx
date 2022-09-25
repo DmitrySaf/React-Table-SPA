@@ -34,34 +34,43 @@ const Table = ({searchFilters}: {searchFilters: ISearchFilter}) => {
   const createRows = (goods: IGood[]) => {
     const { searchValue, column } = searchFilters;
 
-    if (searchValue === '') return goods.map(good => <Good good={good}/>);
+    if (searchValue === '') return goods.map(good => <Good key={good.id} good={good}/>);
     switch (column) {
-      case 'name': return validateNames(goods);
-      case 'quantity': return validateQuantities(goods);
-      default: return goods.map(good => <Good good={good}/>);
+      case 'name': return validateStrings(goods);
+      case 'quantity': return validateNumbers(goods, 'quantity');
+      case 'distance': return validateNumbers(goods, 'distance');
+      default: return goods.map(good => <Good key={good.id} good={good}/>);
     }
   }
 
-  const validateQuantities = (goods: IGood[]) => {
+  const validateNumbers = (goods: IGood[], prop: 'quantity' | 'distance') => {
     const { clause, searchValue } = searchFilters;
 
     switch (clause) {
       case 'equal': return goods.map(good => {
-        if (good.quantity === +searchValue!) return <Good good={good}/>
+        if (good[prop] === +searchValue!) return <Good key={good.id} good={good}/>
       });
-      default: return goods.map(good => <Good good={good}/>);
+      case 'contains': return goods.map(good => {
+        if (new RegExp(`${searchValue}`, 'i').test(`${good[prop]}`)) return <Good key={good.id} good={good}/>
+      });
+      case 'less': return goods.map(good => {
+        if (good[prop] < +searchValue!) return <Good key={good.id} good={good}/>
+      })
+      case 'more': return goods.map(good => {
+        if (good[prop] > +searchValue!) return <Good key={good.id} good={good}/>
+      })
+      default: return goods.map(good => <Good key={good.id} good={good}/>);
     }
   }
 
-  const validateNames = (goods: IGood[]) => {
+  const validateStrings = (goods: IGood[]) => {
     const { searchValue, clause } = searchFilters;
     const regExp = (clause === 'equal')
       ? new RegExp(`^${searchValue}$`)
       : new RegExp(`${searchValue}`, 'i');
 
     return goods.map(good => {
-      const name = (good.name === undefined) ? '' : good.name;
-      if (regExp.test(name)) return <Good good={{...good, name}}/>
+      if (regExp.test(good.name)) return <Good key={good.id} good={good}/>
     })
   }
   
@@ -83,10 +92,10 @@ const Table = ({searchFilters}: {searchFilters: ISearchFilter}) => {
 }
 
 const Good = ({good}: {good: IGood}) => {
-  const { id, date, name, quantity, distance } = good;
+  const { date, name, quantity, distance } = good;
 
   return (
-    <tr key={id}>
+    <tr>
       <td>{date}</td>
       <td>{name}</td>
       <td>{quantity}</td>

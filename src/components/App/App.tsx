@@ -7,7 +7,12 @@ import { ISearchFilter } from '../interfaces'
 import './App.scss'
 
 function App() {
-  const [searchFilters, setSearchFilters] = useState<ISearchFilter>({});
+  const initialFilters = {
+    searchValue: '',
+    column: 'name',
+    clause: 'equal'
+  }
+  const [searchFilters, setSearchFilters] = useState<ISearchFilter>(initialFilters);
 
   const onSearch = (value: ISearchFilter) => {
     setSearchFilters(value);
