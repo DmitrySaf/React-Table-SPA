@@ -45,24 +45,19 @@ const Table = () => {
   }
 
   return (
-    <div className="table">
-      <div className="table__header">Table of goods:</div>
-      <TableFilter />
-      <table>
-        <thead>
-          <tr>
-            <th>Дата</th>
-            <th>Название</th>
-            <th>Количество</th>
-            <th>Расстояние</th>
-          </tr>
-        </thead>
-        <tbody>
-          {createRows(rows)}
-        </tbody>
-      </table>
-    </div>
-    
+    <table className="table">
+      <thead>
+        <tr>
+          <th>Дата</th>
+          <th>Название</th>
+          <th>Количество</th>
+          <th>Расстояние</th>
+        </tr>
+      </thead>
+      <tbody>
+        {createRows(rows)}
+      </tbody>
+    </table>
   )
 }
 

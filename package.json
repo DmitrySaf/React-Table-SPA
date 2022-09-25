@@ -2,13 +2,17 @@
   "name": "react-table-spa",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "server": "nodemon ./src/assets/server/server.js",
     "preview": "vite preview"
   },
   "dependencies": {
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "nodemon": "^2.0.20",
+    "pg": "^8.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
