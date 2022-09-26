@@ -2,19 +2,22 @@
   "name": "react-table-spa",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "server": "nodemon ./src/assets/server/server.js",
-    "preview": "vite preview"
+    "dev:client": "vite client",
+    "dev:server": "nodemon server",
+    "build:client": "tsc && vite build"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "nodemon": "^2.0.20",
     "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "sequelize": "^6.23.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",
