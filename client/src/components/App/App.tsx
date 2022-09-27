@@ -20,7 +20,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="table__title">Table of goods:</h1>
+      <h1 className="table__title">Доступные рейсы:</h1>
       <TableFilter onSearch={onSearch} />
       <Table searchFilters={searchFilters} />
     </div>

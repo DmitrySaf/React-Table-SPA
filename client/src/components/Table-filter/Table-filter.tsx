@@ -38,12 +38,24 @@ const TableFilter = (props: Props) => {
 
   return (
     <div className="table-filter">
-      <select onChange={onColumnSelect} ref={selectColumn} name="column" id="column" className="table-filter__column">
+      <select
+        onChange={onColumnSelect}
+        ref={selectColumn}
+        name="column"
+        id="column"
+        className="table-filter__column"
+      >
         <option value="name">Название</option>
         <option value="quantity">Количество</option>
         <option value="distance">Расстояние</option>
       </select>
-      <select onChange={onClauseSelect} ref={selectClause} name="clause" id="clause" className="talbe-filter__clause">
+      <select
+        onChange={onClauseSelect}
+        ref={selectClause}
+        name="clause"
+        id="clause"
+        className="talbe-filter__clause"
+      >
         <option value="equal">Равно</option>
         <option value="contains">Содержит</option>
         <option value="more">Больше</option>
@@ -53,7 +65,7 @@ const TableFilter = (props: Props) => {
         onChange={onSearch}
         type="text"
         className="table-filter__input"
-        placeholder="Enter value"
+        placeholder="Введите значение"
       />
     </div>
   )

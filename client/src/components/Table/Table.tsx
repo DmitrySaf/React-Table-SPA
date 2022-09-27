@@ -78,10 +78,10 @@ const Table = ({searchFilters}: {searchFilters: ISearchFilter}) => {
     <table className="table">
       <thead>
         <tr>
-          <th>Дата</th>
-          <th>Название</th>
-          <th>Количество</th>
-          <th>Расстояние</th>
+          <th>Дата вылета</th>
+          <th>Название города</th>
+          <th>Количество мест</th>
+          <th>Расстояние (км)</th>
         </tr>
       </thead>
       <tbody>
