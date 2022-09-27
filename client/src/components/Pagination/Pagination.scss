@@ -1,0 +1,36 @@
+.pagination {
+  margin: 50px auto 0 auto;
+  width: max-content;
+  &__list {
+    padding: 0;
+    margin: 0;
+    display: flex;
+  }
+  &__item {
+    list-style-type: none;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border: 1px solid #fff;
+    transition: .3s all;
+    cursor: pointer;
+    &:focus, &_active {
+      outline: none;
+      background-color: #fff;
+      color: #242424;
+    }
+    &:hover {
+      background-color: #fff;
+      color: #242424;
+    }
+    &:first-child {
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
+    }
+    &:last-child {
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+  }
+}
