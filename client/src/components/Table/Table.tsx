@@ -1,76 +1,63 @@
 import { useState } from 'react'
 
-import { IGood, ISearchFilter } from '../interfaces';
+import { IFlight, ISearchFilter } from '../interfaces';
 
 import './Table.scss'
 
-const test = [
-  {
-    id: 1,
-    date: '21.02.2022',
-    name: 'John',
-    quantity: 123,
-    distance: 12
-  },
-  {
-    id: 2,
-    date: '20.02.2022',
-    name: 'Alex',
-    quantity: 1100,
-    distance: 10
-  },
-  {
-    id: 3,
-    date: '19.02.2022',
-    name: 'Croc',
-    quantity: 1,
-    distance: 14
-  }
-]
+type TableProps = {
+  searchFilters: ISearchFilter,
+  flightsList: IFlight[],
+  currentPage: number
+}
 
-const Table = ({searchFilters}: {searchFilters: ISearchFilter}) => {
-  const [goods, setGoods] = useState<IGood[]>(test);
+const Table = ({searchFilters, flightsList, currentPage}: TableProps) => {
+  const [flights, setFlights] = useState<IFlight[]>(flightsList);
+  const startIndex = 10 * (currentPage - 1);
 
-  const createRows = (goods: IGood[]) => {
+  const renderFlights = (flights: IFlight[]) => {
     const { searchValue, column } = searchFilters;
 
-    if (searchValue === '') return goods.map(good => <Good key={good.id} good={good}/>);
+    if (searchValue === '') return createRows(flights);
     switch (column) {
-      case 'name': return validateStrings(goods);
-      case 'quantity': return validateNumbers(goods, 'quantity');
-      case 'distance': return validateNumbers(goods, 'distance');
-      default: return goods.map(good => <Good key={good.id} good={good}/>);
+      case 'name': return validateStrings(flights).splice(startIndex, 10);
+      case 'quantity': return validateNumbers(flights, 'quantity').splice(startIndex, 10);
+      case 'distance': return validateNumbers(flights, 'distance').splice(startIndex, 10);
+      default: return createRows(flights);
     }
   }
 
-  const validateNumbers = (goods: IGood[], prop: 'quantity' | 'distance') => {
+  const createRows = (flights: IFlight[]) => {
+    return flights.map(flight => <Flight key={flight.id} flight={flight}/>).splice(startIndex, 10);
+  }
+
+  const validateNumbers = (flights: IFlight[], prop: 'quantity' | 'distance') => {
     const { clause, searchValue } = searchFilters;
 
     switch (clause) {
-      case 'equal': return goods.map(good => {
-        if (good[prop] === +searchValue!) return <Good key={good.id} good={good}/>
+      case 'equal': return flights.map(flight => {
+        if (flight[prop] === +searchValue!) return <Flight key={flight.id} flight={flight}/>
       });
-      case 'contains': return goods.map(good => {
-        if (new RegExp(`${searchValue}`, 'i').test(`${good[prop]}`)) return <Good key={good.id} good={good}/>
+      case 'contains': return flights.map(flight => {
+        if (new RegExp(`${searchValue}`, 'i').test(`${flight[prop]}`)) return <Flight key={flight.id} flight={flight}/>
       });
-      case 'less': return goods.map(good => {
-        if (good[prop] < +searchValue!) return <Good key={good.id} good={good}/>
+      case 'less': return flights.map(flight => {
+        if (flight[prop] < +searchValue!) return <Flight key={flight.id} flight={flight}/>
       })
-      case 'more': return goods.map(good => {
-        if (good[prop] > +searchValue!) return <Good key={good.id} good={good}/>
+      case 'more': return flights.map(flight => {
+        if (flight[prop] > +searchValue!) return <Flight key={flight.id} flight={flight}/>
       })
-      default: return goods.map(good => <Good key={good.id} good={good}/>);
+      default: return createRows(flights);
     }
   }
 
-  const validateStrings = (goods: IGood[]) => {
+  const validateStrings = (flights: IFlight[]) => {
     const { searchValue, clause } = searchFilters;
     const regExp = (clause === 'equal')
       ? new RegExp(`^${searchValue}$`)
       : new RegExp(`${searchValue}`, 'i');
 
-    return goods.map(good => {
-      if (regExp.test(good.name)) return <Good key={good.id} good={good}/>
+    return flights.map(flight => {
+      if (regExp.test(flight.name)) return <Flight key={flight.id} flight={flight}/>
     })
   }
   
@@ -85,14 +72,14 @@ const Table = ({searchFilters}: {searchFilters: ISearchFilter}) => {
         </tr>
       </thead>
       <tbody>
-        {createRows(goods)}
+        {renderFlights(flights)}
       </tbody>
     </table>
   )
 }
 
-const Good = ({good}: {good: IGood}) => {
-  const { date, name, quantity, distance } = good;
+const Flight = ({flight}: {flight: IFlight}) => {
+  const { date, name, quantity, distance } = flight;
 
   return (
     <tr>

@@ -1,4 +1,4 @@
-interface IGood {
+interface IFlight {
   id: number,
   date: string,
   name: string,
@@ -13,6 +13,6 @@ interface ISearchFilter {
 }
 
 export type {
-  IGood,
+  IFlight,
   ISearchFilter
 }
