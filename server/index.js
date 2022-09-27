@@ -1,27 +1,24 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import cors from 'cors';
-import sequelize from './db.js';
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const db = require('./db');
 
-dotenv.config();
 const app = express();
+console.log(process.env.HTTP_PORT)
 const PORT = process.env.HTTP_PORT || 5001
 
 app.use(cors())
-/* app.use(express.json())
-app.use(express.static(path.resolve(__dirname, 'static')))
-app.use(fileUpload({})) */
-app.get('/', (req, res) => {
-  res.send('hi')
+app.use(express.json())
+app.get('/', async (req, res) => {
+  const flight = await db.query('select * from flight');
+  res.json(flight.rows);
 })
 
 const start = async () => {
   try {
-      await sequelize.authenticate()
-      await sequelize.sync()
-      app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
+    app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
   } catch (e) {
-      console.log(e)
+    console.log(e)
   }
 }
 
