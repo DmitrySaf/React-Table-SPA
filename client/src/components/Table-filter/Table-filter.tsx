@@ -1,46 +1,35 @@
-import { useRef, useState } from 'react';
+import { useReducer, useEffect } from 'react';
 
-import { ISearchFilter } from '../interfaces';
+import { ISearchFilter, IReducerAction } from '../interfaces';
 
 import './Table-filter.scss'
 
-type Event = {
-  target: {
-    value: string
-  }
-}
-
 type Props = {
-  onSearch: (args: ISearchFilter) => void
+  onSearch: (args: ISearchFilter) => void,
+  initialFilters: ISearchFilter
 }
 
-const TableFilter = (props: Props) => {
-  const [column, setColumn] = useState('name');
-  const [clause, setClause] = useState('equal');
-  const selectColumn = useRef<HTMLSelectElement>(null);
-  const selectClause = useRef<HTMLSelectElement>(null);
-
-  const onColumnSelect = () => {
-    if (selectColumn.current) setColumn(selectColumn.current.value)
+const reducer = (state: ISearchFilter, action: IReducerAction) => {
+  switch (action.type) {
+    case 'column': return {...state, column: action.payload};
+    case 'clause': return {...state, clause: action.payload};
+    case 'searchValue': return {...state, searchValue: action.payload}
+    default: return state
   }
+}
 
-  const onClauseSelect = () => {
-    if (selectClause.current) setClause(selectClause.current.value);
-  }
+const TableFilter = ({onSearch, initialFilters}: Props) => {
+  const [state, dispatch] = useReducer(reducer, initialFilters);
 
-  const onSearch = (e: Event) => {
-    props.onSearch({
-      searchValue: e.target.value,
-      column,
-      clause
-    });
-  }
+  useEffect(() => {
+    onSearch(state);
+  }, [state]);
 
   return (
     <div className="table-filter">
       <select
-        onChange={onColumnSelect}
-        ref={selectColumn}
+        onChange={(e) => dispatch({type: 'column', payload: e.target.value})}
+        value={state.column}
         name="column"
         id="column"
         className="table-filter__column"
@@ -50,8 +39,8 @@ const TableFilter = (props: Props) => {
         <option value="distance">Расстояние</option>
       </select>
       <select
-        onChange={onClauseSelect}
-        ref={selectClause}
+        onChange={(e) => dispatch({type: 'clause', payload: e.target.value})}
+        value={state.clause}
         name="clause"
         id="clause"
         className="talbe-filter__clause"
@@ -62,7 +51,8 @@ const TableFilter = (props: Props) => {
         <option value="less">Меньше</option>
       </select>
       <input
-        onChange={onSearch}
+        onChange={(e) => dispatch({type: 'searchValue', payload: e.target.value})}
+        value={state.searchValue}
         type="text"
         className="table-filter__input"
         placeholder="Введите значение"

@@ -12,7 +12,13 @@ interface ISearchFilter {
   clause: string
 }
 
+interface IReducerAction {
+  type: string,
+  payload: string
+}
+
 export type {
   IFlight,
-  ISearchFilter
+  ISearchFilter,
+  IReducerAction
 }
